@@ -1,0 +1,51 @@
+name: API Breaking Changes Check
+
+on:
+    pull_request:
+        paths:
+            - "api/**"
+
+jobs:
+    check-breaking-changes:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Check API breaking changes
+              id: api-diff
+              uses: AsteriusIT/apiops-engine-cli/.github/actions/apiops-diff@main
+              with:
+                  old-source: "git:origin/main:openapi.yaml"
+                  new-source: "file:./openapi.yaml"
+                  fail-on-breaking: "true"
+
+            - name: Comment PR
+              if: always()
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const result = JSON.parse(`${{ steps.api-diff.outputs.result }}`);
+
+                      let body = `## API Diff Report\n\n`;
+                      body += `**Status:** ${result.status}\n`;
+                      body += `**Summary:** ${result.summary}\n\n`;
+
+                      if (result.changes && result.changes.length > 0) {
+                        body += `### Changes\n\n`;
+                        body += `| Type | Method | Path | Breaking | Message |\n`;
+                        body += `|------|--------|------|----------|--------|\n`;
+
+                        for (const change of result.changes) {
+                          const breaking = change.breaking ? '⚠️ Yes' : '✅ No';
+                          body += `| ${change.type} | ${change.method || '-'} | ${change.path || '-'} | ${breaking} | ${change.message} |\n`;
+                        }
+                      }
+
+                      github.rest.issues.createComment({
+                        issue_number: context.issue.number,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        body: body
+                      });
