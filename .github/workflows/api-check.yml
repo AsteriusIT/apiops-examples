@@ -3,7 +3,7 @@ name: API Breaking Changes Check
 on:
     pull_request:
         paths:
-            - "api/**"
+            - "**"
 
 jobs:
     check-breaking-changes:
