@@ -16,7 +16,6 @@ jobs:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
                   curl -sL \
-                    -H "Authorization: token ${GH_TOKEN}" \
                     -H "Accept: application/octet-stream" \
                     $(curl -s \
                       https://api.github.com/repos/AsteriusIT/apiops-engine-cli/releases/latest \
@@ -27,5 +26,5 @@ jobs:
             - name: Check breaking changes
               run: |
                   ./apiops-engine-cli api diff \
-                    -s git:origin/main:api/openapi.yaml \
-                    -t file:./api/openapi.yaml
+                    -s git:origin/main:openapi.yaml \
+                    -t file:./openapi.yaml
