@@ -40,7 +40,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-        delete:
+        post:
             summary: Create a pet
             operationId: createPets
             tags:
