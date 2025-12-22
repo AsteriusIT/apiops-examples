@@ -4,6 +4,7 @@ info:
     title: Swagger Petstore
     license:
         name: MIT
+    x-apiops-project-id: "1"
 servers:
     - url: http://petstore.swagger.io/v1
 paths:
