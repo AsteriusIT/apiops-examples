@@ -16,11 +16,10 @@ jobs:
                   GH_TOKEN: ${{ secrets.GH_PAT }}
               run: |
                   curl -sL \
-                    -H "Accept: application/octet-stream" \
+                    -o apiops-engine-cli \
                     $(curl -s \
                       https://api.github.com/repos/AsteriusIT/apiops-engine-cli/releases/latest \
-                      | jq -r '.assets[] | select(.name == "apiops-engine-cli-linux-amd64") | .url') \
-                    -o apiops-engine-cli
+                      | jq -r '.assets[] | select(.name == "apiops-engine-cli-linux-amd64") | .browser_download_url')
                   chmod +x apiops-engine-cli
 
             - name: Check breaking changes
