@@ -27,4 +27,5 @@ jobs:
               run: |
                   ./apiops-engine-cli api diff \
                     -s git:origin/main:openapi.yaml \
-                    -t file:./openapi.yaml
+                    -t file:./openapi.yaml \
+                    --publish
