@@ -18,10 +18,8 @@ jobs:
                   RESPONSE=$(curl -s \
                     -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                     https://api.github.com/repos/AsteriusIT/apiops-engine-cli/releases/tags/v0.0.3)
-                  echo "API Response: $RESPONSE"
 
                   URL=$(echo "$RESPONSE" | jq -r '.assets[] | select(.name == "apiops-engine-cli-linux-amd64") | .browser_download_url')
-                  echo "Download URL: $URL"
 
                   curl -sL -o apiops-engine-cli "$URL"
                   chmod +x apiops-engine-cli
