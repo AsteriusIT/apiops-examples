@@ -25,6 +25,8 @@ jobs:
                   chmod +x apiops-engine-cli
 
             - name: Check breaking changes
+              env:
+                  APIOPS_ENGINE_HOST: ${{ vars.APIOPS_ENGINE_HOST }}
               run: |
                   ./apiops-engine-cli api diff \
                     -s git:origin/main:openapi.yaml \
